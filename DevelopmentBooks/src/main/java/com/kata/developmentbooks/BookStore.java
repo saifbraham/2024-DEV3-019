@@ -72,6 +72,48 @@ public class BookStore {
         return totalPrice;
     }
 
+    public boolean isTowBookSeriesPurchased(Basket basket) {
+
+        Map<Book, Integer> books = basket.getBasket();
+        int nonZeroCount = 0;
+
+        for (Integer value : books.values()) {
+            if (value != null && value != 0) {
+                nonZeroCount++;
+                if (nonZeroCount > 2) {
+                    return false; // More than one non-zero value
+                }
+            }
+        }
+
+        // Return true if exactly one non-zero value was found
+        return nonZeroCount == 2;
+    }
+
+    public double calculateTotalPriceOfTowSeriesPurchase(Basket basket) {
+        Map<Book, Integer> books = basket.getBasket();
+        double totalPrice = 0.0;
+        int bookPrice = 50;
+        int totalQuantity = 0;
+        double discountMultiplier = 1 - 0.05;
+
+        for (Integer value : books.values()) {
+            totalQuantity += value;
+        }
+
+
+        int pairs = totalQuantity / 2;          // Number of pairs eligible for discount
+        int remainingBooks = totalQuantity % 2; // Books without discount
+
+        // Calculate the price for the pairs with the discount
+        totalPrice += pairs * (2 * bookPrice) * discountMultiplier;
+
+        // Add the price of any remaining books without discount
+        totalPrice += remainingBooks * bookPrice;
+
+        return totalPrice;
+    }
+
     public Basket getBasket() {
         return basket;
     }

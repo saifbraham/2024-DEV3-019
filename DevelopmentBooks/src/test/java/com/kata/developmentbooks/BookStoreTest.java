@@ -144,5 +144,59 @@ class BookStoreTest {
 
     }
 
+    @Test
+    @DisplayName("Check if only tow different book series is being purchased")
+    void testIfTowDifferentBookIsPurchased() {
+
+        // Arrange: Set up a store and create a book basket with specified purchase quantities
+        BookStore store = new BookStore();
+
+        Book book1 = new Book("Clean Code", "Robert Martin", 2008);
+        Book book2 = new Book("The Clean Coder", "Robert Martin", 2011);
+        Book book3 = new Book("Clean Architecture", "Robert Martin", 2017);
+        Book book4 = new Book("Test Driven Development by Example", "Kint Beck", 2003);
+        Book book5 = new Book("Working Effectively With Legacy Code", "Michael C. Feathers", 2004);
+        store.addQuantityOfBookToBasket(book1, 1);
+        store.addQuantityOfBookToBasket(book2, 0);
+        store.addQuantityOfBookToBasket(book3, 0);
+        store.addQuantityOfBookToBasket(book4, 0);
+        store.addQuantityOfBookToBasket(book5, 2);
+
+        // Act: Ensure that only tow book series is purchased
+        boolean isTowBookSeriesPurchased = store.isTowBookSeriesPurchased(store.getBasket());
+
+        // Assert: Confirm that tow book series is purchased
+        assertTrue(isTowBookSeriesPurchased);
+
+    }
+
+    @Test
+    @DisplayName("Calculate total price withe 5% discount for a tow book series purchase")
+    void testCalculateTotalPriceTowSeriesPurchase() {
+
+        // Arrange: Set up a store and create a book basket with specified purchase quantities
+        BookStore store = new BookStore();
+
+        Book book1 = new Book("Clean Code", "Robert Martin", 2008);
+        Book book2 = new Book("The Clean Coder", "Robert Martin", 2011);
+        Book book3 = new Book("Clean Architecture", "Robert Martin", 2017);
+        Book book4 = new Book("Test Driven Development by Example", "Kint Beck", 2003);
+        Book book5 = new Book("Working Effectively With Legacy Code", "Michael C. Feathers", 2004);
+        store.addQuantityOfBookToBasket(book1,0);
+        store.addQuantityOfBookToBasket(book2,0);
+        store.addQuantityOfBookToBasket(book3,2);
+        store.addQuantityOfBookToBasket(book4,0);
+        store.addQuantityOfBookToBasket(book5,3);
+
+        // Act: Calculate total price with 5% of discount
+        double price = store.calculateTotalPriceOfTowSeriesPurchase(store.getBasket());
+
+        // Assert: Check that the total price matches the expected value
+            // TowDifferentBooks * 5% + TowDifferentBooks * 5% + OneBook * 50
+            // (50 + 50) * 5% + (50 + 50) *5% + 1 * 50
+        assertEquals(240, price);
+
+    }
+
 
 }
