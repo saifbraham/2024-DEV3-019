@@ -10,6 +10,7 @@ public class BookStore {
     private static final int BOOK_PRICE = 50;
     private static final double DISCOUNT_25_PERCENT = 0.25;
     private static final double DISCOUNT_5_PERCENT = 0.05;
+    private static final double DISCOUNT_10_PERCENT = 0.10;
 
     private Basket basket = new Basket();
 
@@ -56,6 +57,23 @@ public class BookStore {
         int remainingBooks = totalQuantity % 2;
 
         double totalPrice = pairs * (2 * BOOK_PRICE) * (1 - DISCOUNT_5_PERCENT);
+        totalPrice += remainingBooks * BOOK_PRICE;
+
+        return totalPrice;
+    }
+
+    public boolean isThreeBookSeriesPurchased(Basket basket) {
+
+        return getNonZeroSeriesCount(basket) == 3;
+    }
+
+    public double calculateTotalPriceOfThreeSeriesPurchase(Basket basket) {
+
+        int totalQuantity = basket.getBasket().values().stream().mapToInt(Integer::intValue).sum();
+        int pairs = totalQuantity / 3;
+        int remainingBooks = totalQuantity % 3;
+
+        double totalPrice = pairs * (3 * BOOK_PRICE) * (1 - DISCOUNT_10_PERCENT);
         totalPrice += remainingBooks * BOOK_PRICE;
 
         return totalPrice;

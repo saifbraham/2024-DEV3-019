@@ -4,6 +4,7 @@ import com.kata.developmentbooks.models.Basket;
 import com.kata.developmentbooks.models.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,6 +35,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(1)
     @DisplayName("Create basket with 5 books and corresponding quantities")
     void testCreateBasketOfFiveBooksWithQuantityToBuy(){
 
@@ -50,6 +52,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(2)
     @DisplayName("Verify if the quantities are equal across each book series")
     void testIfAllQuantityOfBooksAreEqual(){
 
@@ -61,6 +64,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(3)
     @DisplayName("Compute the total price for equal quantities of book series, applying a 25% discount")
     void testCalculateTotalPriceOfAllQuantityAreEqual(){
 
@@ -74,6 +78,7 @@ class BookStoreTest {
 
 
     @Test
+    @Order(4)
     @DisplayName("Check if only a single book series is being purchased")
     void testIfSingleBookIsPurchased() {
 
@@ -85,6 +90,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(5)
     @DisplayName("Calculate total price without discount for a single book series purchase")
     void testCalculateTotalPriceSingleSeriesPurchase() {
 
@@ -97,6 +103,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(6)
     @DisplayName("Check if only two different book series is being purchased")
     void testIfTwoDifferentBookIsPurchased() {
 
@@ -108,6 +115,7 @@ class BookStoreTest {
     }
 
     @Test
+    @Order(7)
     @DisplayName("Calculate total price with 5% discount for a two book series purchase")
     void testCalculateTotalPriceTwoSeriesPurchase() {
 
@@ -118,6 +126,33 @@ class BookStoreTest {
         assertEquals(240, price);
 
     }
+
+    @Test
+    @Order(8)
+    @DisplayName("Check if only three different book series is being purchased")
+    void testIfThreeDifferentBookIsPurchased() {
+
+        BookStore store = new BookStore();
+        addBooksToStore(store.getBasket(), 0, 1, 1, 2, 0);
+
+        assertTrue(store.isThreeBookSeriesPurchased(store.getBasket()));
+
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("Calculate total price with 10% discount for a three book series purchase")
+    void testCalculateTotalPriceThreeSeriesPurchase() {
+
+        BookStore store = new BookStore();
+        addBooksToStore(store.getBasket(), 2, 0, 2, 0, 4);
+
+        double price = store.calculateTotalPriceOfThreeSeriesPurchase(store.getBasket());
+        assertEquals(370, price);
+
+    }
+
+
 
 
 }
