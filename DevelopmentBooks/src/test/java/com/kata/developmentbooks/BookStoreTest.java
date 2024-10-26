@@ -53,26 +53,55 @@ class BookStoreTest {
 
     @Test
     @Order(2)
-    @DisplayName("Verify if the quantities are equal across each book series")
+    @DisplayName("Use case 1 - Verify if the quantities are equal across each book series")
     void testIfAllQuantityOfBooksAreEqual(){
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 2, 2, 2, 2, 2);
 
-        assertTrue(store.isAllQuantityAreEqual(store.getBasket()));
+        addBooksToStore(store.getBasket(), 0, 2, 2, 2, 2);
+        assertEquals(4, store.countEqualQuantities(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 2, 2, 2, 1);
+        assertEquals(0, store.countEqualQuantities(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 2, 2, 2, 2, 2);
+        assertEquals(5, store.countEqualQuantities(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 1, 1, 1, 1, 2);
+        assertEquals(0, store.countEqualQuantities(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 0, 0, 1, 1);
+        assertEquals(2, store.countEqualQuantities(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 0, 0, 1, 0);
+        assertEquals(0, store.countEqualQuantities(store.getBasket()));
+
 
     }
 
     @Test
     @Order(3)
-    @DisplayName("Compute the total price for equal quantities of book series, applying a 25% discount")
+    @DisplayName("Compute the total price for equal quantities of book series, applying discount")
     void testCalculateTotalPriceOfAllQuantityAreEqual(){
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 2, 2, 2, 2, 2);
+        double price = 0;
 
-        double price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
+        addBooksToStore(store.getBasket(), 2, 2, 2, 2, 2);
+        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
         assertEquals(375, price);
+
+        addBooksToStore(store.getBasket(), 0, 2, 2, 2, 2);
+        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
+        assertEquals(320, price);
+
+        addBooksToStore(store.getBasket(), 0, 0, 2, 2, 2);
+        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
+        assertEquals(270, price);
+
+        addBooksToStore(store.getBasket(), 0, 0, 0, 3, 3);
+        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
+        assertEquals(285, price);
 
     }
 

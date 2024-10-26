@@ -4,34 +4,67 @@ import com.kata.developmentbooks.models.Basket;
 import com.kata.developmentbooks.models.Book;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
     private static final double DISCOUNT_25_PERCENT = 0.25;
-    private static final double DISCOUNT_5_PERCENT = 0.05;
+    private static final double DISCOUNT_20_PERCENT = 0.20;
     private static final double DISCOUNT_10_PERCENT = 0.10;
+    private static final double DISCOUNT_5_PERCENT = 0.05;
+
 
     private Basket basket = new Basket();
 
-    public boolean isAllQuantityAreEqual(Basket basket) {
-
+    public int countEqualQuantities(Basket basket) {
         Map<Book, Integer> books = basket.getBasket();
 
-        // Check if the Map is empty or where the first entry is zero
-        if (books.isEmpty()) {
-            return false;
+        // Check if the Map is empty
+        if (books.isEmpty() || books.values().stream()
+                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
+                .count() == 1){
+            return 0; // If there are no books or 1 book series, return 0
         }
 
-        int firstQuantity = books.values().iterator().next();
-        return books.values().stream().allMatch(quantity -> quantity == firstQuantity);
+        // Use a set to store distinct quantities greater than 0
+        Set<Integer> distinctQuantities = books.values().stream()
+                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
+                .collect(Collectors.toSet());
 
+        // Check if all distinct quantities are equal
+        if (distinctQuantities.size() == 1) {
+            // If there is exactly one distinct quantity, return its occurrence count
+            Integer equalQuantity = distinctQuantities.iterator().next();
+            return (int) books.values().stream()
+                    .filter(quantity -> quantity.equals(equalQuantity)) // Count occurrences of the equal quantity
+                    .count();
+        } else {
+            // If there are multiple distinct quantities or if they are not all equal, return 0
+            return 0;
+        }
     }
 
     public double calculateTotalPriceOfAllQuantityAreEqual(Basket basket) {
 
+        Map<Book, Integer> books = basket.getBasket();
+
+        // Use a set to store distinct quantities greater than 0
+        List<Integer> distinctQuantities = books.values().stream()
+                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
+                .toList();
+
         int quantityPerBook = basket.getBasket().values().iterator().next();
-        return quantityPerBook * BOOK_PRICE * 5 * (1 - DISCOUNT_25_PERCENT);
+
+        if(distinctQuantities.size() == 5)
+            return quantityPerBook * BOOK_PRICE * 5 * (1 - DISCOUNT_25_PERCENT);
+        if(distinctQuantities.size() == 4)
+            return quantityPerBook * BOOK_PRICE * 4 * (1 - DISCOUNT_20_PERCENT);
+        if(distinctQuantities.size() == 3)
+            return quantityPerBook * BOOK_PRICE * 3 * (1 - DISCOUNT_10_PERCENT);
+        if(distinctQuantities.size() == 2)
+            return quantityPerBook * BOOK_PRICE * 2 * (1 - DISCOUNT_5_PERCENT);
+        return 0;
     }
 
     public boolean isUniqueBookSeriesPurchased(Basket basket) {
