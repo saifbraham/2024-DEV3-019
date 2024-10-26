@@ -85,23 +85,18 @@ class BookStoreTest {
     void testCalculateTotalPriceOfAllQuantityAreEqual(){
 
         BookStore store = new BookStore();
-        double price = 0;
 
         addBooksToStore(store.getBasket(), 2, 2, 2, 2, 2);
-        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
-        assertEquals(375, price);
+        assertEquals(375, store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket()));
 
         addBooksToStore(store.getBasket(), 0, 2, 2, 2, 2);
-        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
-        assertEquals(320, price);
+        assertEquals(320, store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket()));
 
         addBooksToStore(store.getBasket(), 0, 0, 2, 2, 2);
-        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
-        assertEquals(270, price);
+        assertEquals(270, store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket()));
 
         addBooksToStore(store.getBasket(), 0, 0, 0, 3, 3);
-        price = store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket());
-        assertEquals(285, price);
+        assertEquals(285, store.calculateTotalPriceOfAllQuantityAreEqual(store.getBasket()));
 
     }
 
@@ -129,19 +124,15 @@ class BookStoreTest {
     void testCalculateTotalPriceSingleSeriesPurchase() {
 
         BookStore store = new BookStore();
-        double price = 0;
 
         addBooksToStore(store.getBasket(), 0, 0, 3, 0, 0);
-        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
-        assertEquals(150, price);
+        assertEquals(150, store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket()));
 
         addBooksToStore(store.getBasket(), 0, 0, 0, 0, 4);
-        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
-        assertEquals(200, price);
+        assertEquals(200, store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket()));
 
         addBooksToStore(store.getBasket(), 0, 1, 0, 0, 0);
-        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
-        assertEquals(50, price);
+        assertEquals(50, store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket()));
 
     }
 
@@ -151,8 +142,17 @@ class BookStoreTest {
     void testIfTwoDifferentBookIsPurchased() {
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 1, 0, 0, 0, 2);
 
+        addBooksToStore(store.getBasket(), 1, 0, 0, 0, 2);
+        assertTrue(store.isTwoBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 3, 0, 1, 0);
+        assertTrue(store.isTwoBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 0, 4, 1, 2);
+        assertFalse(store.isTwoBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 1, 0, 0, 4);
         assertTrue(store.isTwoBookSeriesPurchased(store.getBasket()));
 
     }
@@ -163,10 +163,10 @@ class BookStoreTest {
     void testCalculateTotalPriceTwoSeriesPurchase() {
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 0, 0, 2, 0, 3);
 
+        addBooksToStore(store.getBasket(), 0, 0, 2, 5, 0);
         double price = store.calculateTotalPriceOfTwoSeriesPurchase(store.getBasket());
-        assertEquals(240, price);
+        assertEquals(340, price);
 
     }
 
@@ -176,8 +176,8 @@ class BookStoreTest {
     void testIfThreeDifferentBookIsPurchased() {
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 0, 1, 1, 2, 0);
 
+        addBooksToStore(store.getBasket(), 0, 1, 1, 2, 0);
         assertTrue(store.isThreeBookSeriesPurchased(store.getBasket()));
 
     }
