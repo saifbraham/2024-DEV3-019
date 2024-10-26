@@ -180,6 +180,15 @@ class BookStoreTest {
         addBooksToStore(store.getBasket(), 0, 1, 1, 2, 0);
         assertTrue(store.isThreeBookSeriesPurchased(store.getBasket()));
 
+        addBooksToStore(store.getBasket(), 0, 3, 1, 2, 1);
+        assertFalse(store.isThreeBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 2, 2, 0, 3, 0);
+        assertTrue(store.isThreeBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 0, 1, 2, 2);
+        assertTrue(store.isThreeBookSeriesPurchased(store.getBasket()));
+
     }
 
     @Test
