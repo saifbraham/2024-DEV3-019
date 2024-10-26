@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class BookStoreTest {
 
@@ -112,10 +112,15 @@ class BookStoreTest {
     void testIfSingleBookIsPurchased() {
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 0, 0, 0, 0, 2);
 
+        addBooksToStore(store.getBasket(), 0, 0, 0, 0, 2);
         assertTrue(store.isUniqueBookSeriesPurchased(store.getBasket()));
 
+        addBooksToStore(store.getBasket(), 0, 3, 0, 0, 2);
+        assertFalse(store.isUniqueBookSeriesPurchased(store.getBasket()));
+
+        addBooksToStore(store.getBasket(), 0, 3, 1, 1, 0);
+        assertFalse(store.isUniqueBookSeriesPurchased(store.getBasket()));
     }
 
     @Test
@@ -124,10 +129,19 @@ class BookStoreTest {
     void testCalculateTotalPriceSingleSeriesPurchase() {
 
         BookStore store = new BookStore();
-        addBooksToStore(store.getBasket(), 0, 0, 3, 0, 0);
+        double price = 0;
 
-        double price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
+        addBooksToStore(store.getBasket(), 0, 0, 3, 0, 0);
+        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
         assertEquals(150, price);
+
+        addBooksToStore(store.getBasket(), 0, 0, 0, 0, 4);
+        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
+        assertEquals(200, price);
+
+        addBooksToStore(store.getBasket(), 0, 1, 0, 0, 0);
+        price = store.calculateTotalPriceOfSingleSeriesPurchase(store.getBasket());
+        assertEquals(50, price);
 
     }
 
