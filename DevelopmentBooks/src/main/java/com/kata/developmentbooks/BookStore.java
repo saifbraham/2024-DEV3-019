@@ -54,7 +54,7 @@ public class BookStore {
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .toList();
 
-        int quantityPerBook = basket.getBasket().values().iterator().next();
+        int quantityPerBook = distinctQuantities.get(0);
 
         if(distinctQuantities.size() == 5)
             return quantityPerBook * BOOK_PRICE * 5 * (1 - DISCOUNT_25_PERCENT);
