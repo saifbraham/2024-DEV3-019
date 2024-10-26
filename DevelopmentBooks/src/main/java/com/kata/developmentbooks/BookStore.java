@@ -49,7 +49,7 @@ public class BookStore {
 
         Map<Book, Integer> books = basket.getBasket();
 
-        // Use a set to store distinct quantities greater than 0
+        // Use a list to store distinct quantities greater than 0
         List<Integer> distinctQuantities = books.values().stream()
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .toList();
@@ -85,14 +85,39 @@ public class BookStore {
     }
 
     public double calculateTotalPriceOfTwoSeriesPurchase(Basket basket) {
-        int totalQuantity = basket.getBasket().values().stream().mapToInt(Integer::intValue).sum();
-        int pairs = totalQuantity / 2;
-        int remainingBooks = totalQuantity % 2;
 
-        double totalPrice = pairs * (2 * BOOK_PRICE) * (1 - DISCOUNT_5_PERCENT);
-        totalPrice += remainingBooks * BOOK_PRICE;
+        Map<Book, Integer> books = basket.getBasket();
 
-        return totalPrice;
+        // Use a list to store distinct quantities greater than 0
+        List<Integer> distinctQuantities = books.values().stream()
+                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
+                .toList();
+
+        // Find the minimum quantity, if any
+        Optional<Integer> minQuantity = distinctQuantities.stream()
+                .min(Integer::compareTo); // Get the minimum element
+
+        // Calculate first price of couple book series with 5% discount
+        double priceOfCouple = minQuantity.get() * BOOK_PRICE * 2 * (1 - DISCOUNT_5_PERCENT);
+
+        // Subtract minQuantity from each element in distinctQuantities if minQuantity is present
+        List<Integer> adjustedQuantities = minQuantity.map(min ->
+                distinctQuantities.stream()
+                        .map(quantity -> quantity - min) // Subtract min from each quantity
+                        .toList()
+        ).orElse(Collections.emptyList()); // Return an empty list if no minQuantity exists
+
+        // Use a list to store distinct quantities greater than 0
+        List<Integer> distinctQuantitiesOFTwo = adjustedQuantities.stream()
+                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
+                .toList();
+
+        // Calculate price of rest
+        double restPrice = distinctQuantitiesOFTwo.get(0) * BOOK_PRICE;
+
+        // Return total price of couple book series with 5% discount
+        return restPrice + priceOfCouple;
+
     }
 
     public boolean isThreeBookSeriesPurchased(Basket basket) {
