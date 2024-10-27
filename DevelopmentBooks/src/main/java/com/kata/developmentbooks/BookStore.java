@@ -1,7 +1,6 @@
 package com.kata.developmentbooks;
 
 import com.kata.developmentbooks.models.Basket;
-import com.kata.developmentbooks.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
