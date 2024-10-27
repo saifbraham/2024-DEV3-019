@@ -80,4 +80,26 @@ class BookStoreTest {
 
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("Calculate total price with discount for a maximum three different book series purchase")
+    void testCalculateTotalPriceOfMaxThreeSeriesPurchase() {
+
+        Basket basket = store.getBasket();
+
+        basket.clear();
+        addBooksToStore(basket, 1, 2, 3, 0, 0);
+        assertEquals(280, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 0, 1, 2, 0, 1);
+        assertEquals(185, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 0, 2, 2, 0, 2);
+        assertEquals(270, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+
+
+    }
+
 }
