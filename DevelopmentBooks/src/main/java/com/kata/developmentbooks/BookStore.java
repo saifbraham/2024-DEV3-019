@@ -10,7 +10,7 @@ import java.util.*;
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
-    private Basket basket;
+    private final Basket basket;
 
     @Autowired
     private BookStore(Basket basket){
@@ -62,13 +62,13 @@ public class BookStore {
     }
 
     private double getDiscount(int uniqueBooks) {
-        switch (uniqueBooks) {
-            case 2: return 0.05; // 5% discount for 2 unique books
-            case 3: return 0.10; // 10% discount for 3 unique books
-            case 4: return 0.20; // 20% discount for 4 unique books
-            case 5: return 0.25; // 25% discount for 5 unique books
-            default: return 0.0;
-        }
+        return switch (uniqueBooks) {
+            case 2 -> 0.05; // 5% discount for 2 unique books
+            case 3 -> 0.10; // 10% discount for 3 unique books
+            case 4 -> 0.20; // 20% discount for 4 unique books
+            case 5 -> 0.25; // 25% discount for 5 unique books
+            default -> 0.0;
+        };
     }
 
     public Basket getBasket() {
