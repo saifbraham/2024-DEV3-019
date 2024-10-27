@@ -10,6 +10,7 @@ import java.util.*;
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
+    private static final double DISCOUNT_20_PERCENT = 0.20;
     private static final double DISCOUNT_10_PERCENT = 0.10;
     private static final double DISCOUNT_5_PERCENT = 0.05;
 
@@ -22,7 +23,7 @@ public class BookStore {
     }
 
 
-    public double calculateTotalPriceOfThreeSeriesPurchase(List<Integer> quantities) {
+    public double calculatePricelessOfBookSeriesPurchase(List<Integer> quantities) {
 
         // If all quantities are zero, no more books to purchase
         if (Collections.max(quantities) == 0) {
@@ -47,6 +48,8 @@ public class BookStore {
             double setPrice = 0.0;
 
             // Calculate price for this set of unique books
+            if(uniqueBooks == 4)
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_20_PERCENT);
             if(uniqueBooks == 3)
                 setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_10_PERCENT);
             if(uniqueBooks == 2)
@@ -64,8 +67,5 @@ public class BookStore {
         return basket;
     }
 
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
 }
 
