@@ -10,8 +10,6 @@ import java.util.*;
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
-    private static final double DISCOUNT_25_PERCENT = 0.25;
-    private static final double DISCOUNT_20_PERCENT = 0.20;
     private static final double DISCOUNT_10_PERCENT = 0.10;
     private static final double DISCOUNT_5_PERCENT = 0.05;
 
