@@ -10,57 +10,65 @@ import java.util.*;
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
-    private static final double DISCOUNT_20_PERCENT = 0.20;
-    private static final double DISCOUNT_10_PERCENT = 0.10;
-    private static final double DISCOUNT_5_PERCENT = 0.05;
-
-
-    Basket basket;
+    private final Basket basket;
 
     @Autowired
     private BookStore(Basket basket){
         this.basket = basket;
     }
 
+    public double calculatePricelessBySetsOfDifferentUniqueBookCounts(List<Integer> quantities) {
 
-    public double calculatePricelessOfBookSeriesPurchase(List<Integer> quantities) {
+        // Using a recursive helper function to find the minimum price
+        return calculateMinPrice(quantities);
+    }
 
+    private double calculateMinPrice(List<Integer> quantities) {
         // If all quantities are zero, no more books to purchase
         if (Collections.max(quantities) == 0) {
             return 0.0;
         }
 
-        double totalPrice = 0.0;
+        double minPrice = Double.MAX_VALUE;
 
-        // Copy quantities to avoid modifying the original list
-        List<Integer> remainingBooks = new ArrayList<>(quantities);
+        // Try creating sets of different unique book counts (2, 3, 4, or 5 unique books)
+        for (int uniqueBooks = 1; uniqueBooks <= 5; uniqueBooks++) {
+            List<Integer> newQuantities = new ArrayList<>(quantities);
+            int actualUniqueBooks = 0;
 
-        while (Collections.max(remainingBooks) > 0) {
-            // Count the number of unique books in this set
-            int uniqueBooks = 0;
-            for (int i = 0; i < remainingBooks.size(); i++) {
-                if (remainingBooks.get(i) > 0) {
-                    uniqueBooks++;
-                    remainingBooks.set(i, remainingBooks.get(i) - 1);
+            // Decrease quantity for each unique book to form a set
+            for (int i = 0; i < newQuantities.size() && actualUniqueBooks < uniqueBooks; i++) {
+                if (newQuantities.get(i) > 0) {
+                    newQuantities.set(i, newQuantities.get(i) - 1);
+                    actualUniqueBooks++;
                 }
             }
 
-            double setPrice = 0.0;
+            // Only calculate if we formed the desired unique set
+            if (actualUniqueBooks == uniqueBooks) {
+                // Calculate discount based on the size of this unique set
+                double discount = getDiscount(uniqueBooks);
+                double setPrice = uniqueBooks * BOOK_PRICE * (1 - discount);
 
-            // Calculate price for this set of unique books
-            if(uniqueBooks == 4)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_20_PERCENT);
-            if(uniqueBooks == 3)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_10_PERCENT);
-            if(uniqueBooks == 2)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_5_PERCENT);
-            if(uniqueBooks == 1)
-                setPrice = uniqueBooks * BOOK_PRICE;
+                // Recursive call to calculate the remaining books' price
+                double priceForRemainingBooks = calculateMinPrice(newQuantities);
 
-            totalPrice += setPrice;
+                // Calculate the total price for this configuration
+                minPrice = Math.min(minPrice, setPrice + priceForRemainingBooks);
+            }
         }
 
-        return totalPrice;
+        return minPrice;
+    }
+
+    private double getDiscount(int uniqueBooks) {
+        return switch (uniqueBooks) {
+            case 2 -> 0.05; // 5% discount for 2 unique books
+            case 3 -> 0.10; // 10% discount for 3 unique books
+            case 4 -> 0.20; // 20% discount for 4 unique books
+            case 5 -> 0.25; // 25% discount for 5 unique books
+            default -> 0.0;
+        };
     }
 
     public Basket getBasket() {
