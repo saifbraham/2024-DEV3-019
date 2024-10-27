@@ -1,11 +1,13 @@
 package com.kata.developmentbooks;
 
 import com.kata.developmentbooks.models.Basket;
-import com.kata.developmentbooks.models.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
@@ -15,20 +17,20 @@ public class BookStore {
     private static final double DISCOUNT_5_PERCENT = 0.05;
 
 
-    private Basket basket = new Basket();
+    @Autowired
+    private Basket basket;
 
-    public int countEqualQuantities(Basket basket) {
-        Map<Book, Integer> books = basket.getBasket();
+    public int countEqualQuantities(List<Integer> quantities) {
 
-        // Check if the Map is empty
-        if (books.isEmpty() || books.values().stream()
+        // Check if the List is empty
+        if (quantities.isEmpty() || quantities.stream()
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .count() == 1){
             return 0; // If there are no books or 1 book series, return 0
         }
 
         // Use a set to store distinct quantities greater than 0
-        Set<Integer> distinctQuantities = books.values().stream()
+        Set<Integer> distinctQuantities = quantities.stream()
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .collect(Collectors.toSet());
 
@@ -36,7 +38,7 @@ public class BookStore {
         if (distinctQuantities.size() == 1) {
             // If there is exactly one distinct quantity, return its occurrence count
             Integer equalQuantity = distinctQuantities.iterator().next();
-            return (int) books.values().stream()
+            return (int) quantities.stream()
                     .filter(quantity -> quantity.equals(equalQuantity)) // Count occurrences of the equal quantity
                     .count();
         } else {
@@ -45,12 +47,10 @@ public class BookStore {
         }
     }
 
-    public double calculateTotalPriceOfAllQuantityAreEqual(Basket basket) {
-
-        Map<Book, Integer> books = basket.getBasket();
+    public double calculateTotalPriceOfAllQuantityAreEqual(List<Integer> quantities) {
 
         // Use a list to store distinct quantities greater than 0
-        List<Integer> distinctQuantities = books.values().stream()
+        List<Integer> distinctQuantities = quantities.stream()
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .toList();
 
@@ -67,29 +67,27 @@ public class BookStore {
         return 0;
     }
 
-    public boolean isUniqueBookSeriesPurchased(Basket basket) {
+    public boolean isUniqueBookSeriesPurchased(List<Integer> quantities) {
 
-        return getNonZeroSeriesCount(basket) == 1;
+        return getNonZeroSeriesCount(quantities) == 1;
     }
 
-    public double calculateTotalPriceOfSingleSeriesPurchase(Basket basket) {
+    public double calculateTotalPriceOfSingleSeriesPurchase(List<Integer> quantities) {
 
-        return basket.getBasket().values().stream()
+        return quantities.stream()
                 .mapToInt(quantity -> quantity * BOOK_PRICE)
                 .sum();
     }
 
-    public boolean isTwoBookSeriesPurchased(Basket basket) {
+    public boolean isTwoBookSeriesPurchased(List<Integer> quantities) {
 
-        return getNonZeroSeriesCount(basket) == 2;
+        return getNonZeroSeriesCount(quantities) == 2;
     }
 
-    public double calculateTotalPriceOfTwoSeriesPurchase(Basket basket) {
-
-        Map<Book, Integer> books = basket.getBasket();
+    public double calculateTotalPriceOfTwoSeriesPurchase(List<Integer> quantities) {
 
         // Use a list to store distinct quantities greater than 0
-        List<Integer> distinctQuantities = books.values().stream()
+        List<Integer> distinctQuantities = quantities.stream()
                 .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
                 .toList();
 
@@ -120,14 +118,14 @@ public class BookStore {
 
     }
 
-    public boolean isThreeBookSeriesPurchased(Basket basket) {
+    public boolean isThreeBookSeriesPurchased(List<Integer> quantities) {
 
-        return getNonZeroSeriesCount(basket) == 3;
+        return getNonZeroSeriesCount(quantities) == 3;
     }
 
-    public double calculateTotalPriceOfThreeSeriesPurchase(Basket basket) {
+    public double calculateTotalPriceOfThreeSeriesPurchase(List<Integer> quantities) {
 
-        int totalQuantity = basket.getBasket().values().stream().mapToInt(Integer::intValue).sum();
+        int totalQuantity = quantities.stream().mapToInt(Integer::intValue).sum();
         int pairs = totalQuantity / 3;
         int remainingBooks = totalQuantity % 3;
 
@@ -137,8 +135,8 @@ public class BookStore {
         return totalPrice;
     }
 
-    private int getNonZeroSeriesCount(Basket basket) {
-        return (int) basket.getBasket().values().stream().filter(quantity -> quantity != 0).count();
+    private int getNonZeroSeriesCount(List<Integer> quantities) {
+        return (int) quantities.stream().filter(quantity -> quantity != 0).count();
     }
 
     public Basket getBasket() {
