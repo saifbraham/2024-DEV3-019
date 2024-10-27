@@ -86,35 +86,32 @@ public class BookStore {
 
     public double calculateTotalPriceOfTwoSeriesPurchase(List<Integer> quantities) {
 
-        // Use a list to store distinct quantities greater than 0
-        List<Integer> distinctQuantities = quantities.stream()
-                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
-                .toList();
+        // If all quantities are zero, no more books to purchase
+        if (Collections.max(quantities) == 0) {
+            return 0.0;
+        }
 
-        // Find the minimum quantity, if any
-        Optional<Integer> minQuantity = distinctQuantities.stream()
-                .min(Integer::compareTo); // Get the minimum element
+        double totalPrice = 0.0;
 
-        // Calculate first price of couple book series with 5% discount
-        double priceOfCouple = minQuantity.get() * BOOK_PRICE * 2 * (1 - DISCOUNT_5_PERCENT);
+        // Copy quantities to avoid modifying the original list
+        List<Integer> remainingBooks = new ArrayList<>(quantities);
 
-        // Subtract minQuantity from each element in distinctQuantities if minQuantity is present
-        List<Integer> adjustedQuantities = minQuantity.map(min ->
-                distinctQuantities.stream()
-                        .map(quantity -> quantity - min) // Subtract min from each quantity
-                        .toList()
-        ).orElse(Collections.emptyList()); // Return an empty list if no minQuantity exists
+        while (Collections.max(remainingBooks) > 0) {
+            // Count the number of unique books in this set
+            int uniqueBooks = 0;
+            for (int i = 0; i < remainingBooks.size(); i++) {
+                if (remainingBooks.get(i) > 0) {
+                    uniqueBooks++;
+                    remainingBooks.set(i, remainingBooks.get(i) - 1);
+                }
+            }
 
-        // Use a list to store distinct quantities greater than 0
-        List<Integer> distinctQuantitiesOFTwo = adjustedQuantities.stream()
-                .filter(quantity -> quantity > 0) // Only consider quantities greater than 0
-                .toList();
+            // Calculate price for this set of unique books
+            double setPrice = uniqueBooks == 2?uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_5_PERCENT):uniqueBooks * BOOK_PRICE ;
+            totalPrice += setPrice;
+        }
 
-        // Calculate price of rest
-        double restPrice = distinctQuantitiesOFTwo.get(0) * BOOK_PRICE;
-
-        // Return total price of couple book series with 5% discount
-        return restPrice + priceOfCouple;
+        return totalPrice;
 
     }
 

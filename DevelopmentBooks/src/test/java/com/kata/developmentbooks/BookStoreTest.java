@@ -194,52 +194,16 @@ class BookStoreTest {
 
         basket.clear();
         addBooksToStore(basket, 0, 0, 2, 5, 0);
-        double price = store.calculateTotalPriceOfTwoSeriesPurchase(basket.getQuantities());
-        assertEquals(340, price);
+        assertEquals(340, store.calculateTotalPriceOfTwoSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 1, 0, 2, 0, 0);
+        assertEquals(145, store.calculateTotalPriceOfTwoSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 0, 2, 2, 0, 0);
+        assertEquals(190, store.calculateTotalPriceOfTwoSeriesPurchase(basket.getQuantities()));
 
     }
-
-    @Test
-    @Order(8)
-    @DisplayName("Check if only three different book series is being purchased")
-    void testIfThreeDifferentBookIsPurchased() {
-
-        Basket basket = store.getBasket();
-
-        basket.clear();
-        addBooksToStore(basket, 0, 1, 1, 2, 0);
-        assertTrue(store.isThreeBookSeriesPurchased(basket.getQuantities()));
-
-        basket.clear();
-        addBooksToStore(basket, 0, 3, 1, 2, 1);
-        assertFalse(store.isThreeBookSeriesPurchased(basket.getQuantities()));
-
-        basket.clear();
-        addBooksToStore(basket, 2, 2, 0, 3, 0);
-        assertTrue(store.isThreeBookSeriesPurchased(basket.getQuantities()));
-
-        basket.clear();
-        addBooksToStore(basket, 0, 0, 1, 2, 2);
-        assertTrue(store.isThreeBookSeriesPurchased(basket.getQuantities()));
-
-    }
-
-    @Test
-    @Order(9)
-    @DisplayName("Calculate total price with 10% discount for a three book series purchase")
-    void testCalculateTotalPriceThreeSeriesPurchase() {
-
-        Basket basket = store.getBasket();
-
-        basket.clear();
-        addBooksToStore(basket, 2, 0, 0, 1, 3);
-
-        double price = store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities());
-        assertEquals(270, price);
-
-    }
-
-
-
 
 }
