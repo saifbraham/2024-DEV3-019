@@ -10,12 +10,7 @@ import java.util.*;
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
-    private static final double DISCOUNT_20_PERCENT = 0.20;
-    private static final double DISCOUNT_10_PERCENT = 0.10;
-    private static final double DISCOUNT_5_PERCENT = 0.05;
-
-
-    Basket basket;
+    private Basket basket;
 
     @Autowired
     private BookStore(Basket basket){
@@ -23,7 +18,7 @@ public class BookStore {
     }
 
 
-    public double calculatePricelessOfBookSeriesPurchase(List<Integer> quantities) {
+    public double calculatePriceFromGroupOfFiveToOne(List<Integer> quantities) {
 
         // If all quantities are zero, no more books to purchase
         if (Collections.max(quantities) == 0) {
@@ -48,12 +43,14 @@ public class BookStore {
             double setPrice = 0.0;
 
             // Calculate price for this set of unique books
+            if(uniqueBooks == 5)
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(5));
             if(uniqueBooks == 4)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_20_PERCENT);
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(4));
             if(uniqueBooks == 3)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_10_PERCENT);
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(3));
             if(uniqueBooks == 2)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_5_PERCENT);
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(2));
             if(uniqueBooks == 1)
                 setPrice = uniqueBooks * BOOK_PRICE;
 
@@ -61,6 +58,67 @@ public class BookStore {
         }
 
         return totalPrice;
+    }
+
+    public double calculatePriceFromGroupOfTwoToFive(List<Integer> quantities) {
+
+        // Using a recursive helper function to find the minimum price
+        return calculateMinPrice(quantities);
+    }
+
+    private double calculateMinPrice(List<Integer> quantities) {
+        // If all quantities are zero, no more books to purchase
+        if (Collections.max(quantities) == 0) {
+            return 0.0;
+        }
+
+        double minPrice = Double.MAX_VALUE;
+
+        // Try creating sets of different unique book counts (2, 3, 4, or 5 unique books)
+        for (int uniqueBooks = 2; uniqueBooks <= 5; uniqueBooks++) {
+            List<Integer> newQuantities = new ArrayList<>(quantities);
+            int actualUniqueBooks = 0;
+
+            // Decrease quantity for each unique book to form a set
+            for (int i = 0; i < newQuantities.size() && actualUniqueBooks < uniqueBooks; i++) {
+                if (newQuantities.get(i) > 0) {
+                    newQuantities.set(i, newQuantities.get(i) - 1);
+                    actualUniqueBooks++;
+                }
+            }
+
+            // Only calculate if we formed the desired unique set
+            if (actualUniqueBooks == uniqueBooks) {
+                // Calculate discount based on the size of this unique set
+                double discount = getDiscount(uniqueBooks);
+                double setPrice = uniqueBooks * BOOK_PRICE * (1 - discount);
+
+                // Recursive call to calculate the remaining books' price
+                double priceForRemainingBooks = calculateMinPrice(newQuantities);
+
+                // Calculate the total price for this configuration
+                minPrice = Math.min(minPrice, setPrice + priceForRemainingBooks);
+            }
+        }
+
+        return minPrice;
+    }
+
+    private double getDiscount(int uniqueBooks) {
+        switch (uniqueBooks) {
+            case 2: return 0.05; // 5% discount for 2 unique books
+            case 3: return 0.10; // 10% discount for 3 unique books
+            case 4: return 0.20; // 20% discount for 4 unique books
+            case 5: return 0.25; // 25% discount for 5 unique books
+            default: return 0.0;
+        }
+    }
+
+    public double calculatePriceless(List<Integer> quantities) {
+        return Math.min(
+                calculatePriceFromGroupOfFiveToOne(quantities),
+                calculatePriceFromGroupOfTwoToFive(quantities)
+        );
     }
 
     public Basket getBasket() {
