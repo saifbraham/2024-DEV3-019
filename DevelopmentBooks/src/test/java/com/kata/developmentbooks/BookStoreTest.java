@@ -67,19 +67,19 @@ class BookStoreTest {
 
         basket.clear();
         addBooksToStore(basket, 0, 0, 2, 0, 0);
-        assertEquals(100, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(100, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 3, 0, 0, 0, 0);
-        assertEquals(150, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(150, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 0, 0, 0, 1, 0);
-        assertEquals(50, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(50, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 0, 0, 0, 0, 0);
-        assertEquals(0.0, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(0.0, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
     }
 
@@ -93,15 +93,15 @@ class BookStoreTest {
 
         basket.clear();
         addBooksToStore(basket, 0, 0, 2, 5, 0);
-        assertEquals(340, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(340, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 1, 0, 2, 0, 0);
-        assertEquals(145, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(145, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 0, 2, 2, 0, 0);
-        assertEquals(190, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(190, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
     }
 
@@ -114,15 +114,37 @@ class BookStoreTest {
 
         basket.clear();
         addBooksToStore(basket, 1, 2, 3, 0, 0);
-        assertEquals(280, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(280, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 0, 1, 2, 0, 1);
-        assertEquals(185, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(185, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
         basket.clear();
         addBooksToStore(basket, 0, 2, 2, 0, 2);
-        assertEquals(270, store.calculateTotalPriceOfThreeSeriesPurchase(basket.getQuantities()));
+        assertEquals(270, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
+
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Calculate priceless for four  max four book series purchase")
+    void testCalculateTotalPriceOfFourSeriesPurchase() {
+
+        Basket basket = store.getBasket();
+
+        basket.clear();
+        addBooksToStore(basket, 2, 2, 1, 1, 0);
+        assertEquals(255, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 2, 2, 2, 1, 0);
+        assertEquals(295, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
+
+        basket.clear();
+        addBooksToStore(basket, 1, 2, 1, 1, 0);
+        assertEquals(210, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
+
 
     }
 
