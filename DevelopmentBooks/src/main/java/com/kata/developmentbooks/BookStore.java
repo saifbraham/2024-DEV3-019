@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class BookStore {
 
     private static final int BOOK_PRICE = 50;
-    private static final double DISCOUNT_25_PERCENT = 0.25;
-    private static final double DISCOUNT_20_PERCENT = 0.20;
     private static final double DISCOUNT_10_PERCENT = 0.10;
     private static final double DISCOUNT_5_PERCENT = 0.05;
 
@@ -25,7 +22,7 @@ public class BookStore {
     }
 
 
-    public double calculateTotalPriceOfTwoSeriesPurchase(List<Integer> quantities) {
+    public double calculateTotalPriceOfThreeSeriesPurchase(List<Integer> quantities) {
 
         // If all quantities are zero, no more books to purchase
         if (Collections.max(quantities) == 0) {
@@ -47,15 +44,21 @@ public class BookStore {
                 }
             }
 
+            double setPrice = 0.0;
+
             // Calculate price for this set of unique books
-            double setPrice = uniqueBooks == 2?uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_5_PERCENT):uniqueBooks * BOOK_PRICE ;
+            if(uniqueBooks == 3)
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_10_PERCENT);
+            if(uniqueBooks == 2)
+                setPrice = uniqueBooks * BOOK_PRICE * (1 - DISCOUNT_5_PERCENT);
+            if(uniqueBooks == 1)
+                setPrice = uniqueBooks * BOOK_PRICE;
+
             totalPrice += setPrice;
         }
 
         return totalPrice;
-
     }
-
 
     public Basket getBasket() {
         return basket;
@@ -65,3 +68,4 @@ public class BookStore {
         this.basket = basket;
     }
 }
+
