@@ -67,9 +67,5 @@ public class BookStore {
         return basket;
     }
 
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
-
 }
 
