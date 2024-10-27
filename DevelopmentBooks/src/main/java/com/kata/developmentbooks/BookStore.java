@@ -17,50 +17,7 @@ public class BookStore {
         this.basket = basket;
     }
 
-
-    public double calculatePriceFromGroupOfFiveToOne(List<Integer> quantities) {
-
-        // If all quantities are zero, no more books to purchase
-        if (Collections.max(quantities) == 0) {
-            return 0.0;
-        }
-
-        double totalPrice = 0.0;
-
-        // Copy quantities to avoid modifying the original list
-        List<Integer> remainingBooks = new ArrayList<>(quantities);
-
-        while (Collections.max(remainingBooks) > 0) {
-            // Count the number of unique books in this set
-            int uniqueBooks = 0;
-            for (int i = 0; i < remainingBooks.size(); i++) {
-                if (remainingBooks.get(i) > 0) {
-                    uniqueBooks++;
-                    remainingBooks.set(i, remainingBooks.get(i) - 1);
-                }
-            }
-
-            double setPrice = 0.0;
-
-            // Calculate price for this set of unique books
-            if(uniqueBooks == 5)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(5));
-            if(uniqueBooks == 4)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(4));
-            if(uniqueBooks == 3)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(3));
-            if(uniqueBooks == 2)
-                setPrice = uniqueBooks * BOOK_PRICE * (1 - getDiscount(2));
-            if(uniqueBooks == 1)
-                setPrice = uniqueBooks * BOOK_PRICE;
-
-            totalPrice += setPrice;
-        }
-
-        return totalPrice;
-    }
-
-    public double calculatePriceFromGroupOfTwoToFive(List<Integer> quantities) {
+    public double calculatePricelessBySetsOfDifferentUniqueBookCounts(List<Integer> quantities) {
 
         // Using a recursive helper function to find the minimum price
         return calculateMinPrice(quantities);
@@ -75,7 +32,7 @@ public class BookStore {
         double minPrice = Double.MAX_VALUE;
 
         // Try creating sets of different unique book counts (2, 3, 4, or 5 unique books)
-        for (int uniqueBooks = 2; uniqueBooks <= 5; uniqueBooks++) {
+        for (int uniqueBooks = 1; uniqueBooks <= 5; uniqueBooks++) {
             List<Integer> newQuantities = new ArrayList<>(quantities);
             int actualUniqueBooks = 0;
 
@@ -112,13 +69,6 @@ public class BookStore {
             case 5: return 0.25; // 25% discount for 5 unique books
             default: return 0.0;
         }
-    }
-
-    public double calculatePriceless(List<Integer> quantities) {
-        return Math.min(
-                calculatePriceFromGroupOfFiveToOne(quantities),
-                calculatePriceFromGroupOfTwoToFive(quantities)
-        );
     }
 
     public Basket getBasket() {
