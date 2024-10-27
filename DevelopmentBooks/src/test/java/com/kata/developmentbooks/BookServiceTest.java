@@ -2,6 +2,7 @@ package com.kata.developmentbooks;
 
 import com.kata.developmentbooks.models.Basket;
 import com.kata.developmentbooks.models.Book;
+import com.kata.developmentbooks.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -12,10 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class BookStoreTest {
+class BookServiceTest {
 
     @Autowired
-    private BookStore store;
+    private BookService store;
 
     private Book book1;
     private Book book2;
