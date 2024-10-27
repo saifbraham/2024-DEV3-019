@@ -143,6 +143,9 @@ class BookStoreTest {
 
         basket.clear();
         addBooksToStore(basket, 1, 2, 1, 1, 0);
+        // Grouped by 2 : [1, 1] + [1, 1] + [1] = 5 BOOKS -> [50 * 2 * 5%] + [50 * 2 * 5%] + 50 = 240
+        // Grouped by 3 : [1, 1, 1] + [1, 1] = 5 BOOKS -> [50 * 3 * 10%] + [50 * 2 * 5%] = 230
+        // Grouped by 4 : [1, 1, 1, 1] + [1] = 5 BOOKS -> [50 * 4 * 20%] + 50 = 210 ->  Priceless
         assertEquals(210, store.calculatePricelessOfBookSeriesPurchase(basket.getQuantities()));
 
 
