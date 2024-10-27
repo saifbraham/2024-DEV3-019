@@ -1,19 +1,21 @@
-package com.kata.developmentbooks;
+package com.kata.developmentbooks.services;
 
 import com.kata.developmentbooks.models.Basket;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Component
-public class BookStore {
+@Service
+public class BookService {
 
     private static final int BOOK_PRICE = 50;
     private final Basket basket;
 
     @Autowired
-    private BookStore(Basket basket){
+    private BookService(Basket basket){
         this.basket = basket;
     }
 
@@ -74,6 +76,4 @@ public class BookStore {
     public Basket getBasket() {
         return basket;
     }
-
 }
-

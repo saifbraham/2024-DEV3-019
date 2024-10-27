@@ -1,9 +1,12 @@
 package com.kata.developmentbooks.models;
 
-public class Book {
-    private String bookTitle;
-    private String bookAuthor;
-    private int publishYear;
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Book implements Serializable {
+    private final String bookTitle;
+    private final String bookAuthor;
+    private final int publishYear;
 
     public Book(String bookTitle, String bookAuthor, int publishYear) {
         this.bookTitle = bookTitle;
@@ -11,28 +14,20 @@ public class Book {
         this.publishYear = publishYear;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    // Override equals and hashCode for use as a Map key
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return publishYear == book.publishYear &&
+                Objects.equals(bookTitle, book.bookTitle) &&
+                Objects.equals(bookAuthor, book.bookAuthor);
     }
 
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
-    }
-
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
-    }
-
-    public int getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(int publishYear) {
-        this.publishYear = publishYear;
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookTitle, bookAuthor, publishYear);
     }
 
 }
