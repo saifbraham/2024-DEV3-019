@@ -32,11 +32,11 @@ public class BookController {
     private List<Integer> mapToQuantitiesList(Map<String, Integer> bookQuantities) {
         // Map quantities to a list in the order of the books
         return List.of(
-                bookQuantities.getOrDefault("Clean Code", 0),
-                bookQuantities.getOrDefault("The Clean Coder", 0),
-                bookQuantities.getOrDefault("Clean Architecture", 0),
-                bookQuantities.getOrDefault("Test Driven Development by Example", 0),
-                bookQuantities.getOrDefault("Working Effectively With Legacy Code", 0)
+                bookQuantities.getOrDefault("CleanCode", 0),
+                bookQuantities.getOrDefault("TheCleanCoder", 0),
+                bookQuantities.getOrDefault("CleanArchitecture", 0),
+                bookQuantities.getOrDefault("TestDrivenDevelopmentbyExample", 0),
+                bookQuantities.getOrDefault("WorkingEffectivelyWithLegacyCode", 0)
         );
     }
 

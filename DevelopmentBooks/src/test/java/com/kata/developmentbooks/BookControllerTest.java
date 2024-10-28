@@ -41,13 +41,14 @@ public class BookControllerTest {
     @Test
     public void testCalculatePriceFiveBookSeries() throws Exception {
         // Set up the expected map and list for the service method
-        String bookQuantities = "Clean Code=2,The Clean Coder=2,Clean Architecture=2,Test Driven Development by Example=1,Working Effectively With Legacy Code=1";
+        String bookQuantities = "CleanCode=2,TheCleanCoder=2,CleanArchitecture=2,TestDrivenDevelopmentbyExample=1,WorkingEffectivelyWithLegacyCode=1";
 
         // Mock the bookService's response
         when(bookService.calculatePricelessBySetsOfDifferentUniqueBookCounts(List.of(2, 2, 2, 1, 1)))
                 .thenReturn(320.0); // Mock response value
 
         // Perform the mock GET request and assert the result
+        // http://localhost:8080/api/books/calculatePrice/CleanCode=2,TheCleanCoder=2,CleanArchitecture=2,TestDrivenDevelopmentbyExample=1,WorkingEffectivelyWithLegacyCode=1
         mockMvc.perform(get("/api/books/calculatePrice/{bookQuantities}", bookQuantities))
                 .andExpect(status().isOk())
                 .andExpect(content().string("320.0"));
