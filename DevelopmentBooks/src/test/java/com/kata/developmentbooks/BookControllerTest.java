@@ -26,7 +26,7 @@ public class BookControllerTest {
     @Test
     public void testCalculatePriceSingleBookSeries() throws Exception {
         // Set up the expected map and list for the service method
-        String bookQuantities = "Clean Code=2";
+        String bookQuantities = "CleanCode=2";
 
         // Mock the bookService's response
         when(bookService.calculatePricelessBySetsOfDifferentUniqueBookCounts(List.of(2, 0, 0, 0, 0)))
@@ -57,7 +57,7 @@ public class BookControllerTest {
     @Test
     public void testCalculatePriceThreeBookSeries() throws Exception {
         // Set up the expected map and list for the service method
-        String bookQuantities = "Clean Code=1,The Clean Coder=2,Clean Architecture=3";
+        String bookQuantities = "CleanCode=1,TheCleanCoder=2,CleanArchitecture=3";
 
         // Mock the bookService's response
         when(bookService.calculatePricelessBySetsOfDifferentUniqueBookCounts(List.of(1, 2, 3, 0, 0)))
