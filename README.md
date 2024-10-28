@@ -1,6 +1,9 @@
 # 2024-DEV3-019
 Code Kata
 
+# To test Get price in local host after clone project and start server :
+http://localhost:8080/api/books/calculatePrice/CleanCode=2,TheCleanCoder=2,CleanArchitecture=2,TestDrivenDevelopmentbyExample=1,WorkingEffectivelyWithLegacyCode=1
+
 # DevelopmentBooks Pricing Model
 
 There is a series of books about software development that have been read by many developers who want to improve their development skills. Let’s say an editor, in a gesture of immense generosity to mankind (and to increase sales as well), is willing to set up a pricing model where you can get discounts when you buy these books.
